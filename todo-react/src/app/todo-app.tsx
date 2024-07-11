@@ -32,6 +32,13 @@ const TodoApp: React.FC = () => {
     setItems(items.filter(item => item.id !== id));
   };
 
+  const handleEditTodo = (id: number, title: string, description: string) => {
+    setItems(
+      items.map(item =>
+        (item.id === id ?
+          { ...item, title, description } : item)));
+  };
+
   return (
     <div className="container">
       <h1 className="center-align">Todo List</h1>
@@ -43,7 +50,7 @@ const TodoApp: React.FC = () => {
           </div>
         </div>
       ) : (
-        <TodoItems items={items} onDelete={handleDeleteTodo} />
+        <TodoItems items={items} onDelete={handleDeleteTodo} onEdit={handleEditTodo} />
       )}
     </div>
   );
