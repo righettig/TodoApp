@@ -32,21 +32,26 @@ const TodoApp: React.FC = () => {
   };
 
   return (
-    <div>
-      <div>
-        <input
-          type="text"
-          value={title}
-          placeholder="Title"
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <input
-          type="text"
-          value={description}
-          placeholder="Description"
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <button onClick={handleAddItem}>Add Item</button>
+    <div className="container">
+      <h1 className="center-align">Todo List</h1>
+      <div className="row">
+        <div className="input-field col s4 offset-m1">
+          <input id="todoTitle" type="text" className="validate"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <label htmlFor="todoTitle">Title</label>
+        </div>
+        <div className="input-field col s5">
+          <input id="todoDescription" type="text" className="validate"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          <label htmlFor="todoDescription">Description</label>
+        </div>
+        <div className="input-field col s1">
+          <a id="addButton" className="waves-effect waves-light btn" onClick={handleAddItem}>Add</a>
+        </div>
       </div>
       <TodoItems items={items} />
     </div>

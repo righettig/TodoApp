@@ -10,9 +10,18 @@ export type TodoItemProps = {
 
 const TodoItem: React.FC<TodoItemProps> = ({ title, description }) => {
   return (
-    <li>
-      <div>{title}</div>
-      <div>{description}</div>
+    <li className="collection-item">
+      <div>
+        <div>
+          <span style={{ fontWeight: 500 }}>{title}</span>
+          <a href="#!" className="secondary-content">
+            <i className="material-icons">delete</i>
+          </a>
+        </div>
+        <div style={{ paddingTop: '10px' }}>
+          <span>{description}</span>
+        </div>
+      </div>
     </li>
   );
 };

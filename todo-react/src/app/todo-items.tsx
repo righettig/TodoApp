@@ -9,7 +9,7 @@ export type TodoItemsProps = {
 
 const TodoItems: React.FC<TodoItemsProps> = ({ items }) => {
   return (
-    <ul>
+    <ul id="todoList" className="collection">
       {items.map(item => (
         <TodoItem key={item.id} {...item} />
       ))}
