@@ -1,17 +1,18 @@
 "use client";
 
 import React from 'react';
-import TodoItem, { TodoItemProps } from './todo-item';
+import TodoItem, { OnDeleteFunction, TodoItemData } from './todo-item';
 
-export type TodoItemsProps = {
-  items: TodoItemProps[];
+type TodoItemsProps = {
+  items: TodoItemData[];
+  onDelete: OnDeleteFunction;
 };
 
-const TodoItems: React.FC<TodoItemsProps> = ({ items }) => {
+const TodoItems: React.FC<TodoItemsProps> = ({ items, onDelete }) => {
   return (
     <ul id="todoList" className="collection">
       {items.map(item => (
-        <TodoItem key={item.id} {...item} />
+        <TodoItem key={item.id} {...item} onDelete={onDelete} />
       ))}
     </ul>
   );

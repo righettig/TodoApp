@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState } from 'react';
-import { TodoItemProps } from './todo-item';
+import { TodoItemData } from './todo-item';
 import TodoItems from './todo-items';
 import AddTodo from './add-todo';
 
 const TodoApp: React.FC = () => {
-  const [items, setItems] = useState<TodoItemProps[]>([
+  const [items, setItems] = useState<TodoItemData[]>([
     {
       id: 1,
       title: "item 1",
@@ -20,7 +20,7 @@ const TodoApp: React.FC = () => {
   ]);
 
   const handleAddTodo = (title: string, description: string) => {
-    const newItem: TodoItemProps = {
+    const newItem: TodoItemData = {
       id: items.length + 1,
       title,
       description
@@ -28,11 +28,15 @@ const TodoApp: React.FC = () => {
     setItems([...items, newItem]);
   };
 
+  const handleDeleteTodo = (id: number) => {
+    setItems(items.filter(item => item.id !== id));
+  };
+
   return (
     <div className="container">
       <h1 className="center-align">Todo List</h1>
       <AddTodo onAdd={handleAddTodo} />
-      <TodoItems items={items} />
+      <TodoItems items={items} onDelete={handleDeleteTodo} />
     </div>
   );
 };
