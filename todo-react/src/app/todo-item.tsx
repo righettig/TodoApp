@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import styles from './todo-item.module.css';
+import EditTodoItem from './edit-todo-item';
 
 // Define a type for the todo item data
 export type TodoItemData = {
@@ -47,29 +48,14 @@ const TodoItem: React.FC<TodoItemProps> = ({ id, title, description, onDelete, o
   // State to track whether the item is in edit mode
   const [isEditing, setIsEditing] = useState(false);
 
-  // State to manage the input values
-  const [newTitle, setNewTitle] = useState(title);
-  const [newDescription, setNewDescription] = useState(description);
-
-  // Handlers for input changes
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewTitle(e.target.value);
-  };
-
-  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setNewDescription(e.target.value);
-  };
-
   // Handler to save the changes
-  const handleSave = () => {
+  const handleSave = (newTitle: string, newDescription: string) => {
     onEdit(id, newTitle, newDescription);
     setIsEditing(false);
   };
 
   // Handler to cancel editing
   const handleCancel = () => {
-    setNewTitle(title);
-    setNewDescription(description);
     setIsEditing(false);
   };
 
@@ -77,23 +63,12 @@ const TodoItem: React.FC<TodoItemProps> = ({ id, title, description, onDelete, o
     <li className="collection-item">
       <div>
         {isEditing ? (
-          <div>
-            <input
-              type="text"
-              value={newTitle}
-              onChange={handleTitleChange}
-              style={{ fontWeight: 500, marginBottom: '10px' }}
-            />
-            <textarea
-              value={newDescription}
-              onChange={handleDescriptionChange}
-              style={{ paddingTop: '10px', width: '100%', minHeight: '100px' }}
-            />
-            <div style={{ marginTop: '4px' }}>
-              <button onClick={handleSave} style={{ marginRight: '10px' }}>Save</button>
-              <button onClick={handleCancel}>Cancel</button>
-            </div>
-          </div>
+          <EditTodoItem
+            title={title}
+            description={description}
+            onSave={handleSave}
+            onCancel={handleCancel}
+          />
         ) : (
           <div>
             <div className={styles.header}>
