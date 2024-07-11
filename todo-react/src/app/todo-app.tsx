@@ -21,15 +21,20 @@ const TodoApp: React.FC = () => {
   const [description, setDescription] = useState('');
 
   const handleAddItem = () => {
-    const newItem: TodoItemProps = {
-      id: items.length + 1,
-      title,
-      description
-    };
-    setItems([...items, newItem]);
-    setTitle('');
-    setDescription('');
+    if (title && description) {  // Check if both title and description are not empty
+      const newItem: TodoItemProps = {
+        id: items.length + 1,
+        title,
+        description
+      };
+      setItems([...items, newItem]);
+      setTitle('');
+      setDescription('');
+    }
   };
+
+  const isAddButtonDisabled =
+    !title || !description; // Button is disabled if title or description is empty
 
   return (
     <div className="container">
@@ -50,7 +55,16 @@ const TodoApp: React.FC = () => {
           <label htmlFor="todoDescription">Description</label>
         </div>
         <div className="input-field col s1">
-          <a id="addButton" className="waves-effect waves-light btn" onClick={handleAddItem}>Add</a>
+          <a
+            id="addButton"
+            className={`waves-effect waves-light btn ${isAddButtonDisabled ? 'disabled' : ''}`} // Add conditional class
+            onClick={handleAddItem}
+            role="button"
+            aria-disabled={isAddButtonDisabled}
+            tabIndex={isAddButtonDisabled ? -1 : 0} // Optional: make button non-focusable when disabled
+          >
+            Add
+          </a>
         </div>
       </div>
       <TodoItems items={items} />
