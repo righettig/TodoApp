@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import styles from './todo-item.module.css';
 import EditTodoItem from './edit-todo-item';
+import DeleteButton from './delete-button';
+import EditButton from './edit-button';
 
 // Define a type for the todo item data
 export type TodoItemData = {
@@ -20,28 +22,6 @@ type TodoItemProps = TodoItemData & {
   onDelete: OnDeleteFunction;
   onEdit: OnEditFunction;
 };
-
-// Define the DeleteButton component
-const DeleteButton: React.FC<{ id: number; onDelete: OnDeleteFunction }> = ({ id, onDelete }) => (
-  <a
-    href="#!"
-    className="secondary-content"
-    onClick={() => onDelete(id)}
-  >
-    <i className="material-icons">delete</i>
-  </a>
-);
-
-// Define the EditButton component
-const EditButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
-  <a
-    href="#!"
-    className="secondary-content"
-    onClick={onClick}
-  >
-    <i className="material-icons">edit</i>
-  </a>
-);
 
 // Define the main TodoItem component
 const TodoItem: React.FC<TodoItemProps> = ({ id, title, description, onDelete, onEdit }) => {
