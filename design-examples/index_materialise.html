@@ -11,10 +11,14 @@
 <body class="grey lighten-4">
     <div class="container">
         <h1 class="center-align">Todo List</h1>
-        <div class="input-field">
-            <input type="text" id="todoInput" class="validate">
-            <label for="todoInput">Add a new todo</label>
-            <a class="waves-effect waves-light btn">Add</a>
+        <div class="row">
+            <div class="input-field col s11">
+                <input type="text" id="todoInput" class="validate">
+                <label for="todoInput">Add a new todo</label>
+            </div>
+            <div class="input-field col s1">
+                <a class="waves-effect waves-light btn" id="addButton">Add</a>
+            </div>
         </div>
         <ul id="todoList" class="collection">
             <li class="collection-item">
