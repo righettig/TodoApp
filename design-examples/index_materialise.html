@@ -12,9 +12,13 @@
     <div class="container">
         <h1 class="center-align">Todo List</h1>
         <div class="row">
-            <div class="input-field col s11">
-                <input type="text" id="todoInput" class="validate">
-                <label for="todoInput">Add a new todo</label>
+            <div class="input-field col s4 offset-m1">
+                <input type="text" id="todoTitle" class="validate">
+                <label for="todoTitle">Title</label>
+            </div>
+            <div class="input-field col s5">
+                <input type="text" id="todoDescription" class="validate">
+                <label for="todoDescription">Description</label>
             </div>
             <div class="input-field col s1">
                 <a class="waves-effect waves-light btn" id="addButton">Add</a>
@@ -22,8 +26,13 @@
         </div>
         <ul id="todoList" class="collection">
             <li class="collection-item">
-                <span>Dummy Todo Item</span>
-                <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>
+                <div>
+                    <div>
+                        <span style="font-weight: 500;">Title</span>
+                        <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>
+                    </div>    
+                    <div style="padding-top: 10px;"><span>Content</span></div>
+                </div>
             </li>
         </ul>
     </div>
