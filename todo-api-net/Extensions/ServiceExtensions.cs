@@ -7,11 +7,19 @@ namespace Extensions;
 
 public static class ServiceExtensions
 {
-    public static void ConfigureServices(this IServiceCollection services)
+    public static void ConfigureServices(this IServiceCollection services, WebApplicationBuilder builder)
     {
         // Register the in-memory database context
-        services.AddDbContext<TodoContext>(opt =>
-            opt.UseInMemoryDatabase("TodoList"));
+        //services.AddDbContext<TodoContext>(opt =>
+        //    opt.UseInMemoryDatabase("TodoList"));
+
+        // Configure Cosmos DB
+        services.AddDbContext<TodoContext>(options =>
+            options.UseCosmos(
+                builder.Configuration[AppKeys.Endpoint],
+                builder.Configuration[AppKeys.PrimaryKey],
+                builder.Configuration[AppKeys.DatabaseName]
+            ));
 
         // Register application services
         services.AddSingleton<IGuidProvider, GuidProvider>();

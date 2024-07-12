@@ -50,7 +50,7 @@ public class TodoItemsController : ControllerBase
     {
         var todoItem = new TodoItem
         {
-            Id = _guidProvider.NewGuid(),
+            Id = _guidProvider.NewGuid().ToString(),
             Title = todoItemDTO.Title,
             Description = todoItemDTO.Description,
             CreatedAt = _dateTimeProvider.UtcNow()
@@ -64,7 +64,7 @@ public class TodoItemsController : ControllerBase
 
     // PUT: api/TodoItems/5
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutTodoItem(Guid id, TodoItem todoItem)
+    public async Task<IActionResult> PutTodoItem(string id, TodoItem todoItem)
     {
         if (id != todoItem.Id)
         {
@@ -109,7 +109,7 @@ public class TodoItemsController : ControllerBase
         return NoContent();
     }
 
-    private bool TodoItemExists(Guid id)
+    private bool TodoItemExists(string id)
     {
         return _context.TodoItems.Any(e => e.Id == id);
     }

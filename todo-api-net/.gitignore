@@ -35,6 +35,9 @@ appsettings.Local.json
 # Rider IDE
 .idea/
 
+# VS 
+.vs
+
 # VS Code
 .vscode/
 
