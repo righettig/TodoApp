@@ -1,0 +1,80 @@
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+bin/
+obj/
+*.xproj
+*.user
+*.suo
+*.userosscache
+*.suo
+*.sln.docstates
+
+# ASP.NET Core
+*.db
+*.bak
+*.log
+*.pdb
+*.pidb
+*.swp
+*.suo
+*.sln.docstates
+wwwroot/
+node_modules/
+*.nupkg
+*.snupkg
+*.csproj.user
+*.csproj.lock
+
+# Environment settings
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Local.json
+
+# Rider IDE
+.idea/
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# Backup files
+*.bak
+
+# Local development
+.env
+*.local
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# NuGet
+*.nupkg
+*.snupkg
+
+# Auto-generated files
+*.generated.cs
+*.g.cs
+*.g.i.cs
+*.g.i.csproj
+*.g.csproj
+
+# ReSharper
+_ReSharper*
+*.DotSettings
+.idea/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# DotCover
+*.dcov
+*.dotCover
+
+# VS Code directories
+.history/

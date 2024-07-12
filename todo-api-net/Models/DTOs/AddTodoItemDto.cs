@@ -1,0 +1,1 @@
+public record AddTodoItemDTO(string Title, string Description);
