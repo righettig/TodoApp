@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Models;
+using Repositories;
 using Services;
 
 namespace Controllers;
@@ -9,16 +9,16 @@ namespace Controllers;
 [ApiController]
 public class TodoItemsController : ControllerBase
 {
-    private readonly TodoContext _context;
+    private readonly ITodoItemRepository _repository;
     private readonly IGuidProvider _guidProvider;
     private readonly IDateTimeProvider _dateTimeProvider;
 
     public TodoItemsController(
-        TodoContext context, 
-        IGuidProvider guidProvider, 
+        ITodoItemRepository repository,
+        IGuidProvider guidProvider,
         IDateTimeProvider dateTimeProvider)
     {
-        _context = context;
+        _repository = repository;
         _guidProvider = guidProvider;
         _dateTimeProvider = dateTimeProvider;
     }
@@ -27,21 +27,22 @@ public class TodoItemsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems()
     {
-        return await _context.TodoItems.ToListAsync();
+        var todoItems = await _repository.GetAllAsync();
+        return Ok(todoItems);
     }
 
     // GET: api/TodoItems/5
     [HttpGet("{id}")]
     public async Task<ActionResult<TodoItem>> GetTodoItem(string id)
     {
-        var todoItem = await _context.TodoItems.FindAsync(id);
+        var todoItem = await _repository.GetByIdAsync(id);
 
         if (todoItem == null)
         {
             return NotFound();
         }
 
-        return todoItem;
+        return Ok(todoItem);
     }
 
     // POST: api/TodoItems
@@ -56,8 +57,7 @@ public class TodoItemsController : ControllerBase
             CreatedAt = _dateTimeProvider.UtcNow()
         };
 
-        _context.TodoItems.Add(todoItem);
-        await _context.SaveChangesAsync();
+        await _repository.AddAsync(todoItem);
 
         return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id }, todoItem);
     }
@@ -72,22 +72,18 @@ public class TodoItemsController : ControllerBase
         }
 
         todoItem.ModifiedAt = _dateTimeProvider.UtcNow();
-        _context.Entry(todoItem).State = EntityState.Modified;
 
         try
         {
-            await _context.SaveChangesAsync();
+            await _repository.UpdateAsync(todoItem);
         }
-        catch (DbUpdateConcurrencyException)
+        catch (Exception)
         {
-            if (!TodoItemExists(id))
+            if (!await _repository.ExistsAsync(id))
             {
                 return NotFound();
             }
-            else
-            {
-                throw;
-            }
+            throw;
         }
 
         return NoContent();
@@ -97,20 +93,13 @@ public class TodoItemsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteTodoItem(string id)
     {
-        var todoItem = await _context.TodoItems.FindAsync(id);
-        if (todoItem == null)
+        if (!await _repository.ExistsAsync(id))
         {
             return NotFound();
         }
 
-        _context.TodoItems.Remove(todoItem);
-        await _context.SaveChangesAsync();
+        await _repository.DeleteAsync(id);
 
         return NoContent();
-    }
-
-    private bool TodoItemExists(string id)
-    {
-        return _context.TodoItems.Any(e => e.Id == id);
     }
 }

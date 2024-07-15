@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Models;
+using Repositories;
 using Services;
 
 namespace Extensions;
@@ -35,6 +36,7 @@ public static class ServiceExtensions
         // Register application services
         services.AddSingleton<IGuidProvider, GuidProvider>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+        services.AddScoped<ITodoItemRepository, TodoItemRepository>();
 
         // Add controllers
         services.AddControllers();
