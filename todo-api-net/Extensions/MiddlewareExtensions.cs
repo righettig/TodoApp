@@ -10,14 +10,19 @@ public static class MiddlewareExtensions
     {
         app.UseSwagger();
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Todo API v1"));
+        app.UseDeveloperExceptionPage();
     }
 
-    public static void ConfigureCommonMiddleware(this WebApplication app)
+    public static void ConfigureCommonMiddleware(this WebApplication app, bool useMinimalApi = false)
     {
         app.UseCors("AllowAll");
         app.UseHttpsRedirection();
-        app.UseAuthorization();
-        app.MapControllers();
+
+        if (!useMinimalApi) 
+        {
+            app.UseAuthorization();
+            app.MapControllers();
+        }
     }
 
     public static async Task ConfigureDatabase(this WebApplication app)

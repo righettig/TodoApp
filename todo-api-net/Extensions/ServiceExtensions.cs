@@ -8,7 +8,7 @@ namespace Extensions;
 
 public static class ServiceExtensions
 {
-    public static void ConfigureServices(this IServiceCollection services, WebApplicationBuilder builder)
+    public static void ConfigureServices(this IServiceCollection services, WebApplicationBuilder builder, bool useMinimalApi = false)
     {
         services.AddCors(options =>
         {
@@ -39,7 +39,10 @@ public static class ServiceExtensions
         services.AddScoped<ITodoItemRepository, TodoItemRepository>();
 
         // Add controllers
-        services.AddControllers();
+        if (!useMinimalApi) 
+        {
+            services.AddControllers();
+        }
     }
 
     public static void ConfigureSwagger(this IServiceCollection services)
