@@ -40,12 +40,32 @@ const TodoApp: React.FC = () => {
   }, []);
 
   const handleAddTodo = (title: string, description: string) => {
-    const newItem: TodoItemData = {
-      id: items.length + 1,
-      title,
-      description
+    const addTodoItem = async () => {
+      try {
+        const newItem: TodoItemData = {
+          id: items.length + 1, // this is ignored server side
+          title,
+          description
+        };
+        const response = await fetch(`https://localhost:7033/api/todoitems`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newItem),
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        var data = await response.json();
+        newItem.id = data.id;
+        setItems([...items, newItem]);
+      } catch (error) {
+        console.error('Error adding todo:', error);
+      }
     };
-    setItems([...items, newItem]);
+
+    addTodoItem();
   };
 
   const handleDeleteTodo = (id: number) => {
