@@ -49,7 +49,21 @@ const TodoApp: React.FC = () => {
   };
 
   const handleDeleteTodo = (id: number) => {
-    setItems(items.filter(item => item.id !== id));
+    const deleteTodoItems = async () => {
+      try {
+        const response = await fetch(`https://localhost:7033/api/todoitems/${id}`, {
+          method: 'DELETE',
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        setItems(items.filter(item => item.id !== id));
+      } catch (error) {
+        console.error('Error deleting todo:', error);
+      }
+    };
+
+    deleteTodoItems();
   };
 
   const handleEditTodo = (id: number, title: string, description: string) => {

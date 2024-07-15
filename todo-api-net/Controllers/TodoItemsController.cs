@@ -32,7 +32,7 @@ public class TodoItemsController : ControllerBase
 
     // GET: api/TodoItems/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<TodoItem>> GetTodoItem(Guid id)
+    public async Task<ActionResult<TodoItem>> GetTodoItem(string id)
     {
         var todoItem = await _context.TodoItems.FindAsync(id);
 
@@ -95,7 +95,7 @@ public class TodoItemsController : ControllerBase
 
     // DELETE: api/TodoItems/5
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteTodoItem(Guid id)
+    public async Task<IActionResult> DeleteTodoItem(string id)
     {
         var todoItem = await _context.TodoItems.FindAsync(id);
         if (todoItem == null)
