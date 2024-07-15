@@ -1,5 +1,4 @@
 using Extensions;
-using Models;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -14,6 +14,7 @@ public static class MiddlewareExtensions
 
     public static void ConfigureCommonMiddleware(this WebApplication app)
     {
+        app.UseCors("AllowAll");
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();

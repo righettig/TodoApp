@@ -9,6 +9,17 @@ public static class ServiceExtensions
 {
     public static void ConfigureServices(this IServiceCollection services, WebApplicationBuilder builder)
     {
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll",
+                builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+        });
+
         // Register the in-memory database context
         //services.AddDbContext<TodoContext>(opt =>
         //    opt.UseInMemoryDatabase("TodoList"));

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TodoItemData } from './todo-item';
 import TodoItems from './todo-items';
 import AddTodo from './add-todo';
@@ -18,6 +18,26 @@ const TodoApp: React.FC = () => {
     //   description: "description for item2"
     // },
   ]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTodoItems = async () => {
+      try {
+        const response = await fetch('https://localhost:7033/api/todoitems');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data: TodoItemData[] = await response.json();
+        setItems(data);
+      } catch (error) {
+        console.error('Error fetching todo items:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTodoItems();
+  }, []);
 
   const handleAddTodo = (title: string, description: string) => {
     const newItem: TodoItemData = {
@@ -38,6 +58,10 @@ const TodoApp: React.FC = () => {
         (item.id === id ?
           { ...item, title, description } : item)));
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="container">
