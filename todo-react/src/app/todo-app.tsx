@@ -87,10 +87,28 @@ const TodoApp: React.FC = () => {
   };
 
   const handleEditTodo = (id: number, title: string, description: string) => {
-    setItems(
-      items.map(item =>
-        (item.id === id ?
-          { ...item, title, description } : item)));
+    const editTodoItem = async () => {
+      try {
+        const response = await fetch(`https://localhost:7033/api/todoitems/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id, title, description }),
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        setItems(
+          items.map(item =>
+            (item.id === id ?
+              { ...item, title, description } : item)));
+      } catch (error) {
+        console.error('Error editing todo:', error);
+      }
+    };
+
+    editTodoItem();
   };
 
   if (loading) {
