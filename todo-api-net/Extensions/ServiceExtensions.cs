@@ -43,6 +43,8 @@ public static class ServiceExtensions
         {
             services.AddControllers();
         }
+
+        services.AddSignalR();
     }
 
     public static void ConfigureSwagger(this IServiceCollection services)

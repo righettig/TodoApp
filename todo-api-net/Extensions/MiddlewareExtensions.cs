@@ -1,3 +1,4 @@
+using Controllers;
 using Microsoft.Azure.Cosmos;
 using Microsoft.EntityFrameworkCore;
 using Models;
@@ -23,6 +24,8 @@ public static class MiddlewareExtensions
             app.UseAuthorization();
             app.MapControllers();
         }
+
+        app.MapHub<TodoItemsHub>("/todoItemsHub");
     }
 
     public static async Task ConfigureDatabase(this WebApplication app)

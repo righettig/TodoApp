@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { TodoItemData } from './todo-item';
 import { fetchTodoItems, addTodoItem, deleteTodoItem, editTodoItem } from './todos.service';
 
+import signalRService from './signalR.service';
+
 /*
     Optimistic UI updates can significantly improve the user experience by updating the UI immediately, 
     without waiting for the server response. 
@@ -28,6 +30,31 @@ export const useTodos = () => {
         loadTodoItems();
     }, []);
 
+    useEffect(() => {
+        signalRService.on('PostTodoItem', (data) => {
+          console.log('PostTodoItem: ' + JSON.stringify(data));
+          setItems((prevItems) => [...prevItems, data]);
+        });
+    
+        signalRService.on('PutTodoItem', (data) => {
+          console.log('PutTodoItem: ' + JSON.stringify(data));
+          setItems((prevItems) => 
+            prevItems.map(item => (item.id === data.id ? { ...item, title: data.title, description: data.description } : item)));
+        });
+    
+        signalRService.on('DeleteTodoItem', (id) => {
+          console.log('DeleteTodoItem: ' + JSON.stringify(id));
+          setItems((prevItems) => prevItems.filter(item => item.id !== id));
+        });
+    
+        // Clean up the subscription
+        return () => {
+          signalRService.off('PostTodoItem');
+          signalRService.off('PutTodoItem');
+          signalRService.off('DeleteTodoItem');
+        };
+    }, []);
+
     /* 
         A temporary ID is generated for the new item.
         The new item is immediately added to the state.
@@ -42,7 +69,21 @@ export const useTodos = () => {
 
         try {
             const addedItem = await addTodoItem(newItem);
-            setItems((prevItems) => prevItems.map(item => item.id === tempId ? addedItem : item));
+
+            setItems((prevItems) => {
+                // the client who adds the todo item ends up having both the temp and the actual todo item
+                // both present in the collection at the same time upon receiving the signalR update.
+                // this ensure the temp element is removed. 
+                // when signalR is turned off or not working we just have to replace the temp todo item.
+                if (prevItems.find(item => item.id === tempId) && 
+                    prevItems.find(item => item.id === addedItem.id)) {
+                    return prevItems.filter(item => item.id !== tempId);
+                }
+                else {
+                    return prevItems.map(item => item.id === tempId ? addedItem : item);
+                }
+            });
+
         } catch (error) {
             setError(error instanceof Error ? error.message : String(error));
             setItems((prevItems) => prevItems.filter(item => item.id !== tempId));

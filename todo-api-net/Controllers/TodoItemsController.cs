@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Models;
 using Repositories;
 using Services;
@@ -12,15 +13,18 @@ public class TodoItemsController : ControllerBase
     private readonly ITodoItemRepository _repository;
     private readonly IGuidProvider _guidProvider;
     private readonly IDateTimeProvider _dateTimeProvider;
+    private readonly IHubContext<TodoItemsHub> _hubContext;
 
     public TodoItemsController(
         ITodoItemRepository repository,
         IGuidProvider guidProvider,
-        IDateTimeProvider dateTimeProvider)
+        IDateTimeProvider dateTimeProvider,
+        IHubContext<TodoItemsHub> hubContext)
     {
         _repository = repository;
         _guidProvider = guidProvider;
         _dateTimeProvider = dateTimeProvider;
+        _hubContext = hubContext;
     }
 
     // GET: api/TodoItems
@@ -59,6 +63,9 @@ public class TodoItemsController : ControllerBase
 
         await _repository.AddAsync(todoItem);
 
+        // Notify all connected clients
+        await _hubContext.Clients.All.SendAsync("PostTodoItem", todoItem);
+
         return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id }, todoItem);
     }
 
@@ -86,6 +93,9 @@ public class TodoItemsController : ControllerBase
             throw;
         }
 
+        // Notify all connected clients
+        await _hubContext.Clients.All.SendAsync("PutTodoItem", todoItem);
+
         return NoContent();
     }
 
@@ -99,6 +109,9 @@ public class TodoItemsController : ControllerBase
         }
 
         await _repository.DeleteAsync(id);
+
+        // Notify all connected clients
+        await _hubContext.Clients.All.SendAsync("DeleteTodoItem", id);
 
         return NoContent();
     }
