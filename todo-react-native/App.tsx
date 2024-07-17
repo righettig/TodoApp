@@ -1,7 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, FlatList, ListRenderItem, Alert, Button } from 'react-native';
+import { StyleSheet, Text, View, FlatList, ListRenderItem, Button } from 'react-native';
 
 import useTodos from './useTodos';
+
+// Alert does not work on web, thus I have defined a polyfill
+// https://stackoverflow.com/questions/65481226/react-native-alert-alert-only-works-on-ios-and-android-not-web
+import alert from './alert';
 
 export interface TodoItem {
   id: string;
@@ -16,7 +20,7 @@ const App: React.FC = () => {
 
   const handleDelete = (id: string) => {
     // Confirm delete action
-    Alert.alert(
+    alert(
       "Delete Item",
       "Are you sure you want to delete this item?",
       [
@@ -37,11 +41,20 @@ const App: React.FC = () => {
     );
   };
 
+  const handleEdit = (item: TodoItem) => {
+    // Handle edit action (e.g., navigate to an edit screen or show an edit form)
+    alert("Edit Item", `Editing item with ID: ${item.id}`);
+    // You can navigate to another screen or show an input form to edit the item.
+    // For example, using React Navigation:
+    // navigation.navigate('EditTodo', { item });
+  };
+
   const renderItem: ListRenderItem<TodoItem> = ({ item }) => (
     <View style={styles.item}>
       <Text style={styles.title}>Title: {item.title}</Text>
       <Text>Description: {item.description}</Text>
       <View style={styles.buttonContainer}>
+        <Button title="Edit" onPress={() => handleEdit(item)} />
         <Button title="Delete" color="red" onPress={() => handleDelete(item.id)} />
       </View>
     </View>
