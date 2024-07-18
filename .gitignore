@@ -2,3 +2,7 @@
 todo-api-net/.vs/todo-api-net/config/applicationhost.config
 todo-api-net/.vs/todo-api-net/FileContentIndex/e8a65382-e44c-4bb2-a886-6665001a372d.vsidx
 todo-api-net/.vs/todo-api-net/v17/DocumentLayout.json
+todo-api-net/Properties/serviceDependencies.json
+todo-api-net/Properties/serviceDependencies.todoapp-gr - Web Deploy.json
+todo-api-net/Properties/ServiceDependencies/todoapp-gr - Web Deploy/apis1.arm.json
+todo-api-net/Properties/ServiceDependencies/todoapp-gr - Web Deploy/profile.arm.json
