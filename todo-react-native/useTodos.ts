@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { TodoItem } from './App';
 
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
 const useTodos = () => {
   const [todoItems, setTodoItems] = useState<TodoItem[]>([]);
 
   useEffect(() => {
-    //fetch('https://58d1-146-241-236-59.ngrok-free.app/api/TodoItems')
-    fetch('https://localhost:7033/api/TodoItems') // this works only when connecting the web emulator
+    fetch(`${apiUrl}/api/TodoItems`)
       .then(response => response.json())
       .then(data => setTodoItems(data))
       .catch(error => console.error('Error fetching todo items:', error));

@@ -1,6 +1,7 @@
 import { TodoItemData } from './todo-item';
 
-const API_BASE_URL = 'https://localhost:7033/api/todoitems';
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+const API_BASE_URL = `${apiUrl}/api/todoitems`;
 
 export const fetchTodoItems = async (): Promise<TodoItemData[]> => {
     const response = await fetch(API_BASE_URL);

@@ -1,11 +1,13 @@
 import * as signalR from '@microsoft/signalr';
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 class SignalRService {
     private connection: signalR.HubConnection;
 
     constructor() {
         this.connection = new signalR.HubConnectionBuilder()
-            .withUrl("https://localhost:7033/todoItemsHub", { withCredentials: false })
+            .withUrl(`${apiUrl}/todoItemsHub`, { withCredentials: false })
             .withAutomaticReconnect()
             .configureLogging(signalR.LogLevel.Information)
             .build();
