@@ -1,6 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import { Button, StyleSheet, View } from 'react-native';
 import { RootStackParamList } from '../../App';
 
 import TodoItems from '../components/todo-items';
@@ -10,6 +10,7 @@ type HomeProps = StackScreenProps<RootStackParamList, 'Home'>;
 const Home: React.FC<HomeProps> = ({ navigation }) => {
   return (
     <View style={styles.container}>
+      <Button title="Add" onPress={() => navigation.navigate('Add')} />
       <TodoItems navigation={navigation} />
       <StatusBar style="auto" />
     </View>
