@@ -1,6 +1,9 @@
 import { StyleSheet, Text, View, FlatList, ListRenderItem, Button } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+
 import { TodoItem } from '../../TodoItem';
 import { deleteTodoItem } from '../../todos.service';
+import { RootStackParamList } from '../../App';
 
 import useTodos from '../../useTodos';
 
@@ -8,7 +11,11 @@ import useTodos from '../../useTodos';
 // https://stackoverflow.com/questions/65481226/react-native-alert-alert-only-works-on-ios-and-android-not-web
 import alert from '../../alert';
 
-const TodoItems: React.FC = () => {
+type TodoItemsProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'Home'>
+};
+
+const TodoItems: React.FC<TodoItemsProps> = ({ navigation }) => {
   const { todoItems, setTodoItems } = useTodos();
 
   const handleDelete = (id: string) => {
@@ -35,12 +42,7 @@ const TodoItems: React.FC = () => {
   };
 
   const handleEdit = (item: TodoItem) => {
-    // Handle edit action (e.g., navigate to an edit screen or show an edit form)
-    alert("Edit Item", `Editing item with ID: ${item.id}`);
-    
-    // You can navigate to another screen or show an input form to edit the item.
-    // For example, using React Navigation:
-    // navigation.navigate('EditTodo', { item });
+    navigation.navigate('Edit', { item });
   };
 
   const renderItem: ListRenderItem<TodoItem> = ({ item }) => (

@@ -1,12 +1,16 @@
+import { StackScreenProps } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
+import { RootStackParamList } from '../../App';
 
 import TodoItems from '../components/todo-items';
 
-const Home: React.FC = () => {
+type HomeProps = StackScreenProps<RootStackParamList, 'Home'>;
+
+const Home: React.FC<HomeProps> = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <TodoItems />
+      <TodoItems navigation={navigation} />
       <StatusBar style="auto" />
     </View>
   );
