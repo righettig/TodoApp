@@ -1,13 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, FlatList, ListRenderItem, Button } from 'react-native';
-import { TodoItem } from '../TodoItem';
-import { deleteTodoItem } from '../todos.service';
+import { TodoItem } from '../../TodoItem';
+import { deleteTodoItem } from '../../todos.service';
 
-import useTodos from '../useTodos';
+import useTodos from '../../useTodos';
 
 // Alert does not work on web, thus I have defined a polyfill
 // https://stackoverflow.com/questions/65481226/react-native-alert-alert-only-works-on-ios-and-android-not-web
-import alert from '../alert';
+import alert from '../../alert';
 
 const Home: React.FC = () => {
   const { todoItems, setTodoItems } = useTodos();

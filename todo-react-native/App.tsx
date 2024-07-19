@@ -1,4 +1,4 @@
-import Home from './components/home';
+import Home from './app/views/home';
 
 const App: React.FC = () => {
   return <Home />;
