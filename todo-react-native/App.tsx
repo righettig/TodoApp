@@ -1,19 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, FlatList, ListRenderItem, Button } from 'react-native';
+import { TodoItem } from './TodoItem';
+import { deleteTodoItem } from './todos.service';
 
 import useTodos from './useTodos';
 
 // Alert does not work on web, thus I have defined a polyfill
 // https://stackoverflow.com/questions/65481226/react-native-alert-alert-only-works-on-ios-and-android-not-web
 import alert from './alert';
-
-export interface TodoItem {
-  id: string;
-  title: string;
-  description: string;
-  createdAt: string;
-  modifiedAt: string;
-}
 
 const App: React.FC = () => {
   const { todoItems, setTodoItems } = useTodos();
@@ -30,11 +24,11 @@ const App: React.FC = () => {
         },
         {
           text: "OK",
-          onPress: () => {
+          onPress: async () => {
+            await deleteTodoItem(id);
+
             // Handle delete action (e.g., remove from state)
             setTodoItems(todoItems.filter(item => item.id !== id));
-            // Optionally, you can send a request to the server to delete the item.
-            // fetch(`https://localhost:7033/api/TodoItems/${id}`, { method: 'DELETE' });
           }
         }
       ]
@@ -44,6 +38,7 @@ const App: React.FC = () => {
   const handleEdit = (item: TodoItem) => {
     // Handle edit action (e.g., navigate to an edit screen or show an edit form)
     alert("Edit Item", `Editing item with ID: ${item.id}`);
+    
     // You can navigate to another screen or show an input form to edit the item.
     // For example, using React Navigation:
     // navigation.navigate('EditTodo', { item });

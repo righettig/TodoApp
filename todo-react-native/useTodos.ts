@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { TodoItem } from './App';
+import { TodoItem } from './TodoItem';
 
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
