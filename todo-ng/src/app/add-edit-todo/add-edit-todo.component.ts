@@ -13,7 +13,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AddEditTodoComponent implements OnInit {
   @Input() todo: { id: string, title: string, description: string } = { id: '', title: '', description: '' };
-  @Input() isEdit: boolean = false;
+  
+  public isEdit: boolean = false;
 
   constructor(
     private todoService: TodoService,
