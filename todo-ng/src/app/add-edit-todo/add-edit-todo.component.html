@@ -1,0 +1,12 @@
+<div>
+    <h2>{{ isEdit ? 'Edit Todo' : 'Add Todo' }}</h2>
+    <form (ngSubmit)="saveTodo()">
+        <label for="title">Title:</label>
+        <input id="title" [(ngModel)]="todo.title" name="title" required>
+
+        <label for="description">Description:</label>
+        <textarea id="description" [(ngModel)]="todo.description" name="description" required></textarea>
+
+        <button type="submit">{{ isEdit ? 'Save' : 'Add' }}</button>
+    </form>
+</div>

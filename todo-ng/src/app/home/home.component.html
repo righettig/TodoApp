@@ -1,0 +1,5 @@
+<h1>Todo List</h1>
+<button (click)="addTodo()">Add Todo</button>
+<div *ngFor="let todo of todoService.getTodos()">
+  <app-todo-item [todo]="todo"></app-todo-item>
+</div>
