@@ -23,13 +23,22 @@ export class AddEditTodoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
+    this.loadTodo();
+  }
+
+  private async loadTodo(): Promise<void> {
+    this.route.paramMap.subscribe(async params => {
       const id = params.get('id');
       if (id) {
-        const existingTodo = this.todoService.getTodos().find(todo => todo.id === id);
-        if (existingTodo) {
-          this.todo = { ...existingTodo };
-          this.isEdit = true;
+        try {
+          const todos = await this.todoService.getTodos();
+          const existingTodo = todos.find(todo => todo.id === id);
+          if (existingTodo) {
+            this.todo = { ...existingTodo };
+            this.isEdit = true;
+          }
+        } catch (error) {
+          console.error('Error fetching todos', error);
         }
       }
     });
