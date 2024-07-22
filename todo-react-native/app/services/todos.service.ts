@@ -1,4 +1,4 @@
-import { TodoItem } from "./TodoItem";
+import { TodoItem } from "./app/models/TodoItem";
 
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 const API_BASE_URL = `${apiUrl}/api/todoitems`;
@@ -8,6 +8,14 @@ export type TodoItemData = {
     id: string;
     title: string;
     description: string;
+};
+
+export const fetchTodoItems = async (): Promise<TodoItem[]> => {
+    const response = await fetch(API_BASE_URL);
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return await response.json();
 };
 
 export const addTodoItem = async (item: TodoItemData): Promise<TodoItem> => {
@@ -33,7 +41,7 @@ export const deleteTodoItem = async (id: string): Promise<void> => {
     }
 };
 
-export const editTodoItem = async (item: TodoItem): Promise<void> => {
+export const editTodoItem = async (item: TodoItemData): Promise<void> => {
     const response = await fetch(`${API_BASE_URL}/${item.id}`, {
         method: 'PUT',
         headers: {

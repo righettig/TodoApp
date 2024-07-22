@@ -1,10 +1,10 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { StyleSheet, View, Text, TextInput, TouchableHighlight } from 'react-native';
 import { RootStackParamList } from '../../App';
-import { useState } from 'react';
-import { editTodoItem } from '../../todos.service';
+import { useContext, useState } from 'react';
+import { TodoContext } from '../contexts/todoContext';
 
-import alert from '../../alert';
+import alert from '../common/alert';
 
 type EditProps = StackScreenProps<RootStackParamList, 'Edit'>;
 
@@ -14,9 +14,18 @@ const Edit: React.FC<EditProps> = ({ route, navigation }) => {
   const [title, setTitle] = useState(item.title);
   const [description, setDescription] = useState(item.description);
 
-  const editTodo = async () => {
+  const todoContext = useContext(TodoContext);
+
+  if (!todoContext) {
+    throw new Error('TodoContext not found');
+  }
+
+  const { editTodo } = todoContext;
+
+  const handleAmendTodo = async () => {
     try {
-      await editTodoItem({ ...item, title, description });
+      editTodo(item.id, title, description);
+      
       alert("Edit Item", "Todo item updated",
         [
           {
@@ -33,7 +42,7 @@ const Edit: React.FC<EditProps> = ({ route, navigation }) => {
     }
   }
 
-  const cancelEditTodo = () => {
+  const handleCancelEditTodo = () => {
     navigation.goBack();
   }
 
@@ -47,11 +56,11 @@ const Edit: React.FC<EditProps> = ({ route, navigation }) => {
       <Text style={styles.labels}>Description</Text>
       <TextInput style={styles.inputs} value={description} onChangeText={setDescription} />
 
-      <TouchableHighlight onPress={editTodo} underlayColor='#000000'>
+      <TouchableHighlight onPress={handleAmendTodo} underlayColor='#000000'>
         <Text style={styles.buttons}>Edit</Text>
       </TouchableHighlight>
 
-      <TouchableHighlight onPress={cancelEditTodo} underlayColor='#000000'>
+      <TouchableHighlight onPress={handleCancelEditTodo} underlayColor='#000000'>
         <Text style={styles.buttons}>Go back</Text>
       </TouchableHighlight>
     </View>

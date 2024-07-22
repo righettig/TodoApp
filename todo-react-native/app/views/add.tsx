@@ -1,10 +1,10 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { StyleSheet, View, Text, TextInput, TouchableHighlight } from 'react-native';
 import { RootStackParamList } from '../../App';
-import { useState } from 'react';
-import { addTodoItem } from '../../todos.service';
+import { useContext, useState } from 'react';
+import { TodoContext } from '../contexts/todoContext';
 
-import alert from '../../alert';
+import alert from '../common/alert';
 
 type AddProps = StackScreenProps<RootStackParamList, 'Add'>;
 
@@ -12,15 +12,23 @@ const Add: React.FC<AddProps> = ({ navigation }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
-  const addTodo = async () => {
+  const todoContext = useContext(TodoContext);
+
+  if (!todoContext) {
+    throw new Error('TodoContext not found');
+  }
+
+  const { addTodo } = todoContext;
+
+  const handleAddTodo = async () => {
     try {
-      const newTodo = await addTodoItem({ id: '', title, description });
+      addTodo(title, description);
       alert("Add Item", "Todo item added",
         [
           {
             text: "OK",
             onPress: async () => {
-              navigation.navigate('Home', { newTodo });
+              navigation.navigate('Home');
             }
           }
         ]
@@ -31,7 +39,7 @@ const Add: React.FC<AddProps> = ({ navigation }) => {
     }
   }
 
-  const cancelAddTodo = () => {
+  const handleCancelAddTodo = () => {
     navigation.goBack();
   }
 
@@ -45,11 +53,11 @@ const Add: React.FC<AddProps> = ({ navigation }) => {
       <Text style={styles.labels}>Description</Text>
       <TextInput style={styles.inputs} value={description} onChangeText={setDescription} />
 
-      <TouchableHighlight onPress={addTodo} underlayColor='#000000'>
+      <TouchableHighlight onPress={handleAddTodo} underlayColor='#000000'>
         <Text style={styles.buttons}>Add</Text>
       </TouchableHighlight>
 
-      <TouchableHighlight onPress={cancelAddTodo} underlayColor='#000000'>
+      <TouchableHighlight onPress={handleCancelAddTodo} underlayColor='#000000'>
         <Text style={styles.buttons}>Go back</Text>
       </TouchableHighlight>
     </View>

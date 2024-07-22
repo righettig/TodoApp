@@ -1,14 +1,13 @@
 import { StyleSheet, Text, View, FlatList, ListRenderItem, Button } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useState } from 'react';
-
-import { TodoItem } from '../../TodoItem';
-import { deleteTodoItem } from '../../todos.service';
+import { TodoItem } from '../models/todo-item';
 import { RootStackParamList } from '../../App';
+import { useContext } from 'react';
+import { TodoContext } from '../../app/contexts/todoContext';
 
 // Alert does not work on web, thus I have defined a polyfill
 // https://stackoverflow.com/questions/65481226/react-native-alert-alert-only-works-on-ios-and-android-not-web
-import alert from '../../alert';
+import alert from '../common/alert';
 
 type TodoItemsProps = {
   todoItems: TodoItem[],
@@ -16,7 +15,13 @@ type TodoItemsProps = {
 };
 
 const TodoItems: React.FC<TodoItemsProps> = ({ todoItems, navigation }) => {
-  const [todos, setTodoItems] = useState(todoItems);
+  const todoContext = useContext(TodoContext);
+  
+  if (!todoContext) {
+    throw new Error('TodoContext not found');
+  }
+
+  const { deleteTodo } = todoContext;
 
   const handleDelete = (id: string) => {
     // Confirm delete action
@@ -31,10 +36,7 @@ const TodoItems: React.FC<TodoItemsProps> = ({ todoItems, navigation }) => {
         {
           text: "OK",
           onPress: async () => {
-            await deleteTodoItem(id);
-
-            // Handle delete action (e.g., remove from state)
-            setTodoItems(todos.filter(item => item.id !== id));
+            deleteTodo(id);
           }
         }
       ]
