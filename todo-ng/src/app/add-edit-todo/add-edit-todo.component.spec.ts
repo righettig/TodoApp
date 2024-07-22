@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddEditTodoComponent } from './add-edit-todo.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('AddEditTodoComponent', () => {
   let component: AddEditTodoComponent;
@@ -8,7 +9,7 @@ describe('AddEditTodoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddEditTodoComponent]
+      imports: [AddEditTodoComponent, RouterTestingModule]
     })
     .compileComponents();
 
