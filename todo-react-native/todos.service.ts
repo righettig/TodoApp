@@ -10,7 +10,7 @@ export type TodoItemData = {
     description: string;
 };
 
-export const addTodoItem = async (item: TodoItemData): Promise<TodoItemData> => {
+export const addTodoItem = async (item: TodoItemData): Promise<TodoItem> => {
     const response = await fetch(API_BASE_URL, {
         method: 'POST',
         headers: {

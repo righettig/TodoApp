@@ -11,7 +11,7 @@ import Edit from './app/views/edit';
 import Add from './app/views/add';
 
 export type RootStackParamList = {
-  Home: undefined;
+  Home: { newTodo?: TodoItem } | undefined;
   About: undefined;
   Edit: { item: TodoItem; };
   Add: undefined;

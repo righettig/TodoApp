@@ -14,13 +14,13 @@ const Add: React.FC<AddProps> = ({ navigation }) => {
 
   const addTodo = async () => {
     try {
-      await addTodoItem({ id: '', title, description });
+      const newTodo = await addTodoItem({ id: '', title, description });
       alert("Add Item", "Todo item added",
         [
           {
             text: "OK",
             onPress: async () => {
-              navigation.goBack(); // TODO: need to update home page todo items
+              navigation.navigate('Home', { newTodo });
             }
           }
         ]

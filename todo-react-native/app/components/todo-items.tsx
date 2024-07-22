@@ -1,22 +1,22 @@
 import { StyleSheet, Text, View, FlatList, ListRenderItem, Button } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useState } from 'react';
 
 import { TodoItem } from '../../TodoItem';
 import { deleteTodoItem } from '../../todos.service';
 import { RootStackParamList } from '../../App';
-
-import useTodos from '../../useTodos';
 
 // Alert does not work on web, thus I have defined a polyfill
 // https://stackoverflow.com/questions/65481226/react-native-alert-alert-only-works-on-ios-and-android-not-web
 import alert from '../../alert';
 
 type TodoItemsProps = {
+  todoItems: TodoItem[],
   navigation: StackNavigationProp<RootStackParamList, 'Home'>
 };
 
-const TodoItems: React.FC<TodoItemsProps> = ({ navigation }) => {
-  const { todoItems, setTodoItems } = useTodos();
+const TodoItems: React.FC<TodoItemsProps> = ({ todoItems, navigation }) => {
+  const [todos, setTodoItems] = useState(todoItems);
 
   const handleDelete = (id: string) => {
     // Confirm delete action
@@ -34,7 +34,7 @@ const TodoItems: React.FC<TodoItemsProps> = ({ navigation }) => {
             await deleteTodoItem(id);
 
             // Handle delete action (e.g., remove from state)
-            setTodoItems(todoItems.filter(item => item.id !== id));
+            setTodoItems(todos.filter(item => item.id !== id));
           }
         }
       ]
