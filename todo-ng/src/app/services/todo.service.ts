@@ -7,8 +7,8 @@ import { firstValueFrom } from 'rxjs';
   providedIn: 'root'
 })
 export class TodoService {
-  private apiUrl = 'https://todoapp-gr.azurewebsites.net/api/todoitems';
-  private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  private readonly apiUrl = 'https://todoapp-gr.azurewebsites.net/api/todoitems';
+  private readonly headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient) { }
 
