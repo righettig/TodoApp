@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TodoService } from '../services/todo.service';
 import { AddEditTodoComponent } from '../add-edit-todo/add-edit-todo.component';
 import { TodoItemComponent } from '../todo-item/todo-item.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Todo } from '../models/todo.model';
+import { TodoService } from '../services/todo.service';
 
 @Component({
   selector: 'app-home',
@@ -18,10 +18,13 @@ export class HomeComponent {
 
   constructor(
     public todoService: TodoService,
+    private route: ActivatedRoute,
     private router: Router) { }
 
   ngOnInit(): void {
-    this.loadTodos();
+    this.route.params.subscribe(_ => {
+      this.loadTodos();
+    });
   }
 
   private async loadTodos(): Promise<void> {
