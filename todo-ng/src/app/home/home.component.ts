@@ -4,7 +4,7 @@ import { AddEditTodoComponent } from '../add-edit-todo/add-edit-todo.component';
 import { TodoItemComponent } from '../todo-item/todo-item.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Todo } from '../models/todo.model';
-import { TodoService } from '../services/todo.service';
+import { TodoStoreService } from '../services/todo-store.service';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +17,7 @@ export class HomeComponent {
   public todos: Todo[] = [];
 
   constructor(
-    public todoService: TodoService,
+    private todoStoreService: TodoStoreService,
     private route: ActivatedRoute,
     private router: Router) { }
 
@@ -29,7 +29,7 @@ export class HomeComponent {
 
   async loadTodos(): Promise<void> {
     try {
-      this.todos = await this.todoService.getTodos();
+      this.todos = this.todoStoreService.todos();
     } catch (error) {
       console.error('Error fetching todos', error);
     }

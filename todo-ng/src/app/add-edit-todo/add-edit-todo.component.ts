@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TodoService } from '../services/todo.service';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TodoStoreService } from '../services/todo-store.service';
 
 @Component({
   selector: 'app-add-edit-todo',
@@ -17,7 +17,7 @@ export class AddEditTodoComponent implements OnInit {
   public isEdit: boolean = false;
 
   constructor(
-    private todoService: TodoService,
+    private todoStoreService: TodoStoreService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -26,12 +26,12 @@ export class AddEditTodoComponent implements OnInit {
     this.loadTodo();
   }
 
-  private async loadTodo(): Promise<void> {
+  async loadTodo(): Promise<void> {
     this.route.paramMap.subscribe(async params => {
       const id = params.get('id');
       if (id) {
         try {
-          const todos = await this.todoService.getTodos();
+          const todos = this.todoStoreService.todos();
           const existingTodo = todos.find(todo => todo.id === id);
           if (existingTodo) {
             this.todo = { ...existingTodo };
@@ -46,11 +46,11 @@ export class AddEditTodoComponent implements OnInit {
 
   async saveTodo() {
     if (this.isEdit) {
-      await this.todoService.updateTodo(this.todo);
+      await this.todoStoreService.updateTodo(this.todo);
       
     } else {
       this.todo.id = Math.random().toString(36).substr(2, 9); // Generate a simple id
-      await this.todoService.addTodo(this.todo);
+      await this.todoStoreService.addTodo(this.todo);
     }
 
     this.router.navigate(['/']);
