@@ -1,5 +1,13 @@
 <h1>Todo List</h1>
+
 <button (click)="addTodo()">Add Todo</button>
-<div *ngFor="let todo of todos">
-  <app-todo-item [todo]="todo"></app-todo-item>
+
+<div *ngIf="!todos.length">
+  No todo items
 </div>
+
+<ng-container *ngIf="todos.length">
+  <div *ngFor="let todo of todos">
+    <app-todo-item [todo]="todo" (onDelete)="loadTodos()"></app-todo-item>
+  </div>
+</ng-container>

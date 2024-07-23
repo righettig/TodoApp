@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TodoService } from '../services/todo.service';
 import { Router } from '@angular/router';
@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 })
 export class TodoItemComponent {
   @Input() todo!: { id: string, title: string, description: string };
+  @Output() onDelete = new EventEmitter<void>();
 
   constructor(
     private todoService: TodoService, 
@@ -19,6 +20,7 @@ export class TodoItemComponent {
 
   async deleteTodo() {
     await this.todoService.deleteTodo(this.todo.id);
+    this.onDelete.emit();
   }
 
   editTodo() {

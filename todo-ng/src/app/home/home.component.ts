@@ -27,7 +27,7 @@ export class HomeComponent {
     });
   }
 
-  private async loadTodos(): Promise<void> {
+  async loadTodos(): Promise<void> {
     try {
       this.todos = await this.todoService.getTodos();
     } catch (error) {
