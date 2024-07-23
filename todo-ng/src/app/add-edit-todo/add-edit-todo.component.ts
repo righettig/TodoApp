@@ -44,13 +44,15 @@ export class AddEditTodoComponent implements OnInit {
     });
   }
 
-  saveTodo() {
+  async saveTodo() {
     if (this.isEdit) {
-      this.todoService.updateTodo(this.todo);
+      await this.todoService.updateTodo(this.todo);
+      
     } else {
       this.todo.id = Math.random().toString(36).substr(2, 9); // Generate a simple id
-      this.todoService.addTodo(this.todo);
+      await this.todoService.addTodo(this.todo);
     }
+
     this.router.navigate(['/']);
   }
 }

@@ -17,8 +17,8 @@ export class TodoItemComponent {
     private todoService: TodoService, 
     private router: Router) { }
 
-  deleteTodo() {
-    this.todoService.deleteTodo(this.todo.id);
+  async deleteTodo() {
+    await this.todoService.deleteTodo(this.todo.id);
   }
 
   editTodo() {
