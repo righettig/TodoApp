@@ -1,8 +1,15 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
     todos: [],
+    status: 'idle',
+    error: null,
 };
+
+export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
+    const response = await fetch('https://jsonplaceholder.typicode.com/todos?_limit=10');
+    return response.json();
+});
 
 const todoSlice = createSlice({
     name: 'todos',
@@ -20,6 +27,20 @@ const todoSlice = createSlice({
         deleteTodo: (state, action) => {
             state.todos = state.todos.filter(todo => todo.id !== action.payload);
         },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchTodos.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchTodos.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.todos = action.payload;
+            })
+            .addCase(fetchTodos.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
+            });
     },
 });
 
