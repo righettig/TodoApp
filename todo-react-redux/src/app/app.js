@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { addTodo, toggleTodo, deleteTodo, fetchTodos  } from './features/todos/todoSlice';
+import { addTodo, toggleTodo, fetchTodos, deleteTodoAsync } from './features/todos/todoSlice';
 
 function App() {
     const [text, setText] = useState('');
@@ -25,6 +25,10 @@ function App() {
             dispatch(addTodo(text));
             setText('');
         }
+    };
+
+    const handleDeleteTodo = (id) => {
+        dispatch(deleteTodoAsync(id));
     };
 
     return (
@@ -50,7 +54,7 @@ function App() {
                         >
                             {todo.title}
                         </span>
-                        <button onClick={() => dispatch(deleteTodo(todo.id))}>Delete</button>
+                        <button onClick={() => handleDeleteTodo(todo.id)}>Delete</button>
                     </li>
                 ))}
             </ul>

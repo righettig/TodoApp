@@ -11,6 +11,13 @@ export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
     return response.json();
 });
 
+export const deleteTodoAsync = createAsyncThunk('todos/deleteTodo', async (id) => {
+    await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
+        method: 'DELETE',
+    });
+    return id;
+});
+
 const todoSlice = createSlice({
     name: 'todos',
     initialState,
@@ -23,9 +30,6 @@ const todoSlice = createSlice({
             if (todo) {
                 todo.completed = !todo.completed;
             }
-        },
-        deleteTodo: (state, action) => {
-            state.todos = state.todos.filter(todo => todo.id !== action.payload);
         },
     },
     extraReducers: (builder) => {
@@ -40,9 +44,12 @@ const todoSlice = createSlice({
             .addCase(fetchTodos.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;
+            })
+            .addCase(deleteTodoAsync.fulfilled, (state, action) => {
+                state.todos = state.todos.filter(todo => todo.id !== action.payload);
             });
     },
 });
 
-export const { addTodo, toggleTodo, deleteTodo } = todoSlice.actions;
+export const { addTodo, toggleTodo } = todoSlice.actions;
 export default todoSlice.reducer;
